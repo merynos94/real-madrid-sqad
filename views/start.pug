@@ -1,0 +1,16 @@
+doctype html
+html(lang='pl')
+	head
+		title='Pug based layout'
+	body
+		nav#nav
+			ul
+				li
+					a(href="/") Start
+				li
+					a(href="/add") Dodaj
+		#main
+			block content
+		footer
+			p.footer aplikacja testowa w Node, Express i PUG
+

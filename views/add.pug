@@ -1,0 +1,14 @@
+extends start
+block content
+	.main-box 
+		h1 Dodaj motocykl
+		form(method='POST' action='/add')
+			label(for='name') Nazwa
+			input#name(type='text' name='name')  
+			br
+			label(for='year') Rok
+			input#name(type='number' name='year')
+			br
+			button(type='submit') Dodaj
+		if message
+			p #{message}!!!
