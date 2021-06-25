@@ -1,19 +1,24 @@
 extends start
 block content
 	.main-box 
-		h1 Lista Motocykli z lat 60'
+		h1 Lista filmów do obejrzenia w 2021 roku
 		table 
 			thead
 				tr
 					th LP
-					th Nazwa
-					th Rok
+					th Nazwa Filmu
+					th Rok wydania
 					th Edytuj
+					th Usuń
 			tbody
-				each motorcycle, index in motoList
+				each film, index in filmList
 					tr
 						td=index+1
-						td=motorcycle.name
-						td=motorcycle.year
+						td=film.name
+						td=film.year
 						td 
-							a(href='/edit/'+motorcycle.id) edytuj
+							a(href='/edit/'+film.id): button(type="button") Edytuj
+						td
+							a(href='/del/'+film.id): button(type="button") Usuń
+
+						

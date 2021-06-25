@@ -7,6 +7,7 @@ var app = express();
 app.use(express.urlencoded());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
+
 var dbOptions = {
 	host: 'localhost',
 	user: 'node1',
@@ -17,17 +18,12 @@ var dbOptions = {
 app.use(myConnection(mysql, dbOptions, 'pool'))
 
 app.get('/',function(req,res){
-	// var motoList=[
-	// 	{name:'Junak',y:1961},
-	// 	{name:'Sokół',y:1962},
-	// 	{name:'WSK',y:1965},
-	// 	{name:'SHL',y:1968}
-	// ];
+
 	req.getConnection(function(error, conn){
-		conn.query('SELECT * FROM motorcycles',function(err, rows, fields) {
-			var motoList=rows;
+		conn.query('SELECT * FROM films',function(err, rows, fields) {
+			var filmList=rows;
 			res.render('list',{
-				motoList:motoList
+				filmList:filmList
 			});
 		});
 	});
@@ -37,16 +33,16 @@ app.get('/add',function(req,res){
 	res.render('add');
 });
 app.post('/add',function(req,res){
-	var motorcycle={
+	var film={
 		name:req.body.name,
 		year:parseInt(req.body.year)
 	}
 	req.getConnection(function(error, conn) {
-		conn.query('INSERT INTO motorcycles SET ?',motorcycle,function(err, result){
+		conn.query('INSERT INTO films SET ?',film,function(err, result){
 			if(err){
 				var message='Wystąpił błąd';
 			}else{
-				var message='Dodano nowy motocykl';
+				var message='Dodano nowy film';
 			}
 
 			res.render('add',{
@@ -59,22 +55,22 @@ app.post('/add',function(req,res){
 });
 app.get('/edit/(:id)', function(req, res, next){ 
 	req.getConnection(function(error, conn) {
-        conn.query('SELECT * FROM motorcycles WHERE id='+req.params.id,function(err, rows, fields) {
+        conn.query('SELECT * FROM films WHERE id='+req.params.id,function(err, rows, fields) {
             res.render('edit', {
-		        id: rows[0].id,
+		        		id: rows[0].id,
                 name: rows[0].name,
-		        year: parseInt(rows[0].year)
+		        		year: parseInt(rows[0].year)
             })
         })
     })
 })
 app.post('/edit/(:id)', function(req, res, next){ 
-	var motorcycle = {
+	var film = {
         name: req.body.name,
-        year:parseInt(req.body.year)
+        year: parseInt(req.body.year)
     }
 	req.getConnection(function(error, conn) {
-        conn.query('UPDATE motorcycles SET ? WHERE id='+req.params.id,motorcycle, function(err, result) {
+        conn.query('UPDATE films SET ? WHERE id='+req.params.id,film, function(err, result) {
             res.render('edit', {
                 message: 'Zmieniono dane',
 		        id: req.params.id,
@@ -83,5 +79,33 @@ app.post('/edit/(:id)', function(req, res, next){
 		    })
         })
     })   
+})
+app.get('/del/(:id)', function(req, res, next){ 
+	req.getConnection(function(error, conn) {
+        conn.query('SELECT * FROM films WHERE id='+req.params.id,function(err, rows, fields) {
+            res.render('del', {
+		        id: rows[0].id,
+                name: rows[0].name,
+		        year: parseInt(rows[0].year)
+            })
+        })
+    })
+})
+app.post('/del/(:id)', function(req, res, next){ 
+	var film = {
+        name: req.body.name,
+        year:parseInt(req.body.year)
+    }
+	req.getConnection(function(error, conn) {
+        conn.query('DELETE FROM films WHERE id='+req.params.id,film, function(err, result) {
+            res.render('del', {
+                message: 'Usunieto dane',
+		        id: req.params.id,
+                name: req.body.name,
+                year: parseInt(req.body.year)
+		    })
+        })
+    })
+    
 })
 app.listen(3000);

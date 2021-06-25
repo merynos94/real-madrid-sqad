@@ -1,16 +1,17 @@
 doctype html
 html(lang='pl')
 	head
-		title='Pug based layout'
+		title='Lista filmów do obejrzenia w 2021 roku'
 	body
 		nav#nav
-			ul
-				li
-					a(href="/") Start
-				li
-					a(href="/add") Dodaj
+		a(href="/"): button(type="button") Strona główna
+		a(href="/add"): button(type="button") Dodaj film do obejrzenia
+
+
 		#main
 			block content
 		footer
-			p.footer aplikacja testowa w Node, Express i PUG
+			p.footer Aplikacja z wykorzystaniem Node.js, Pug.js, Express, oraz bazy MySql - Radosław Mikoś IV Rok Inf 140962
+			td
+			a(href='https://github.com/merynos94'): button(type="button") Mój Github
 
